@@ -28,7 +28,6 @@ router.get('/:id', async (req, res) => {
 // Updated Record
 router.put('/:id', validateProduct, async (req, res) => {
     let product = await Product.findById(req.params.id);
-    product.url = req.body.url;
     product.name = req.body.name;
     product.price = req.body.price;
     await product.save();
@@ -44,7 +43,6 @@ router.delete('/:id', async (req, res) => {
 // Insert new Record
 router.post('/', validateProduct, async (req, res) => {
     let product = new Product();
-    product.url = req.body.url;
     product.name = req.body.name;
     product.price = req.body.price;
     await product.save();
