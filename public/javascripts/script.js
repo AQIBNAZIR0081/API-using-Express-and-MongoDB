@@ -1,9 +1,8 @@
 $(function () {
     loadProducts();
 
-    $("#products").on("click", ".btn-danger", handleDelete);
-    $("#products").on("click", ".btn-warning", handleUpdate);
-
+    $("#recipes").on("click", ".btn-danger", handleDelete);
+    $("#recipes").on("click", ".btn-warning", handleUpdate);
     $("#addBtn").click(addProduct);
     $("#updateSave").click(updateProduct);
 });
@@ -13,22 +12,22 @@ function loadProducts() {
         url: "http://localhost:3000/api/products",
         method: "GET",
         error: function (response) {
-            var products = $("#products");
-            products.html("An error has occurred");
+            var recipies = $("#recipes");
+            recipies.html("An error has occurred");
         },
         success: function (response) {
             console.log(response);
-            var products = $("#products");
-            products.empty();
+            var recipies = $("#recipes");
+            recipies.empty();
             for (var i = 0; i < response.length; i++) {
-                var product = response[i];
-                products.append(`
-                    <div class="product" data-id="${product._id}">
-                        <h3>${product.title} 
+                var cheez = response[i];
+                recipies.append(`
+                    <div class="product" data-id=${cheez._id}>
+                        <h3>${cheez.Product} 
                             <button class="btn btn-danger btn-sm float-end">Delete</button>
                             <button class="btn btn-warning btn-sm float-end">Edit</button>
                         </h3>
-                        <p>${product.body}</p>
+                        <p>${cheez.Price}</p>
                     </div>
                 `);
             }
@@ -39,7 +38,7 @@ function loadProducts() {
 function handleDelete() {
     let btn = $(this);
     let parentDiv = btn.closest(".product");
-    let id = parentDiv.data("id");
+    let id = parentDiv.attr("data-id");
 
     $.ajax({
         url: `http://localhost:3000/api/products/${id}`,
@@ -51,13 +50,13 @@ function handleDelete() {
 }
 
 function addProduct() {
-    var title = $("#title").val();
-    var body = $("#body").val();
+    var Product = $("#title").val();
+    var Price = $("#body").val();
 
     $.ajax({
         url: "http://localhost:3000/api/products",
         method: "POST",
-        data: { title, body },
+        data: { Product, Price },
         success: function (response) {
             console.log(response);
             $("#title").val("");
@@ -71,29 +70,30 @@ function addProduct() {
 function handleUpdate() {
     let btn = $(this);
     let parentDiv = btn.closest(".product");
-    let id = parentDiv.data("id");
+    let id = parentDiv.attr("data-id");
 
-    $.get(`http://localhost:3000/api/products/${id}`, function (response) {
-        $("#updateID").val(response._id);
-        $("#updateTitle").val(response.title);
-        $("#updateBody").val(response.body);
-        $("#updateModal").modal("show");
-    });
+    $.get(`http://localhost:3000/api/products/${id}`,
+        function (response) {
+            $("#UpdateTitle").val(response.Product);
+            $("#Updatebody").val(response.Price);
+            $("#UpdateModal").modal("show");
+            $("#UpdateID").val(response._id);
+        });
 }
 
 function updateProduct() {
-    var id = $("#updateID").val();
-    var title = $("#updateTitle").val();
-    var body = $("#updateBody").val();
+    var id = $("#UpdateID").val();
+    var Product = $("#UpdateTitle").val();
+    var Price = $("#Updatebody").val();
 
     $.ajax({
         url: `http://localhost:3000/api/products/${id}`,
-        data: { title, body },
+        data: { Product, Price },
         method: "PUT",
         success: function (response) {
             console.log(response);
             loadProducts();
-            $("#updateModal").modal("hide");
+            $("#UpdateModal").modal("hide");
         }
     });
 }
