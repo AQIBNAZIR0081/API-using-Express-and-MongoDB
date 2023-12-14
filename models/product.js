@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 const joi = require('@hapi/joi');
 
 var productSchema = new mongoose.Schema({
-    Product: String,
-    Price: Number,
+    name: String,
+    price: Number,
 });
 
 var Product = mongoose.model("Product", productSchema);
