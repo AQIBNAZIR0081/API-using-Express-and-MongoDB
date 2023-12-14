@@ -23,11 +23,11 @@ function loadProducts() {
                 var cheez = response[i];
                 recipies.append(`
                     <div class="product" data-id=${cheez._id}>
-                        <h3>${cheez.Product} 
+                        <h3>${cheez.name} 
                             <button class="btn btn-danger btn-sm float-end">Delete</button>
                             <button class="btn btn-warning btn-sm float-end">Edit</button>
                         </h3>
-                        <p>${cheez.Price}</p>
+                        <p>${cheez.price}</p>
                     </div>
                 `);
             }
@@ -50,13 +50,13 @@ function handleDelete() {
 }
 
 function addProduct() {
-    var Product = $("#title").val();
-    var Price = $("#body").val();
+    var name = $("#title").val();
+    var price = $("#body").val();
 
     $.ajax({
         url: "http://localhost:3000/api/products",
         method: "POST",
-        data: { Product, Price },
+        data: { name, price },
         success: function (response) {
             console.log(response);
             $("#title").val("");
@@ -74,8 +74,8 @@ function handleUpdate() {
 
     $.get(`http://localhost:3000/api/products/${id}`,
         function (response) {
-            $("#UpdateTitle").val(response.Product);
-            $("#Updatebody").val(response.Price);
+            $("#UpdateTitle").val(response.name);
+            $("#Updatebody").val(response.price);
             $("#UpdateModal").modal("show");
             $("#UpdateID").val(response._id);
         });
@@ -83,12 +83,12 @@ function handleUpdate() {
 
 function updateProduct() {
     var id = $("#UpdateID").val();
-    var Product = $("#UpdateTitle").val();
-    var Price = $("#Updatebody").val();
+    var name = $("#UpdateTitle").val();
+    var price = $("#Updatebody").val();
 
     $.ajax({
         url: `http://localhost:3000/api/products/${id}`,
-        data: { Product, Price },
+        data: { name, price },
         method: "PUT",
         success: function (response) {
             console.log(response);
